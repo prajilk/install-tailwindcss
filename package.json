@@ -1,0 +1,32 @@
+{
+  "name": "install-tailwindcss",
+  "version": "1.0.0",
+  "description": "Easily install and configure tailwindcss for any frameworks.",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "bin": {
+    "install-tailwindcss": "./index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/prajilk/auto-config-tailwind.git"
+  },
+  "keywords": [
+    "tailwindcss config",
+    "tailwindcss",
+    "frameworks"
+  ],
+  "author": "Prajil K",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/prajilk/auto-config-tailwind/issues"
+  },
+  "homepage": "https://github.com/prajilk/auto-config-tailwind#readme",
+  "dependencies": {
+    "@inquirer/select": "^1.2.7",
+    "minimist": "^1.2.8"
+  }
+}
