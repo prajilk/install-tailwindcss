@@ -14,12 +14,13 @@ Then follow the prompts!
 
 You can also directly specify the framework name you want to use via additional command line options. For example, run:
 
-```bash
-# npx install-tailwindcss <framework>
-npx install-tailwindcss next-js
-```
+Replace `<framework>` with your desired frontend framework.
+Replace `<tool>` with your desired tool if any.
 
-Replace <framework> with your desired frontend framework.
+```bash
+# npx install-tailwindcss <framework> -t <tool if any>
+npx install-tailwindcss vite -t react
+```
 
 Currently supported frameworks:
 
@@ -31,8 +32,16 @@ Currently supported frameworks:
 - `angular`
 - `ruby-on-rails`
 - `remix`
+- `parcel`
 - `symfony`
 - `meteor`
 - `create-react-app`
 - `astro`
 - `qwik`
+
+Tool `-t` or `-tool` is only available for `laravel & vite`
+
+Available Tools for:
+
+- `laravel: [vite, laravel-mix]`
+- `vite: [react, vue, svelte]`
