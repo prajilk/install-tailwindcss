@@ -38,7 +38,7 @@ if (answer === null) {
     console.log("\x1b[33m", "\n!!! - Ensure to install Tailwind CSS only after you have successfully installed the desired frontend framework - !!!\n");
 
     answer = await select({
-        message: 'Select a package manager',
+        message: 'Select a framework',
         choices: FRAMEWORKS,
     });
 
@@ -86,6 +86,10 @@ if (answer === 'next-js') {
 }
 else if (answer === 'laravel') {
     if (tool === "vite") {
+        if (!fs.existsSync(path.join(process.cwd(), 'vite.config.js'))) {
+            console.log("\x1b[31m", "\nUnable to find 'vite.config.js'. Please install the frontend framework you intend to start working with initially!");
+            process.exit(0);
+        }
         isFileExists("package.json");
         installTailwind("npm install -D tailwindcss postcss autoprefixer && npx tailwindcss init -p");
         updateConfig(answer);
@@ -139,6 +143,11 @@ else if (answer === 'gatsby') {
     installTailwind("npm install -D tailwindcss postcss autoprefixer && npx tailwindcss init -p");
 
     updateConfig(answer);
+
+    if (!fs.existsSync("src/styles")) {
+        fs.mkdirSync("src/styles")
+        fs.writeFileSync(path.join(process.cwd(), "src", "styles", "global.css"), "")
+    }
     updateCss("src/styles/global.css");
 
     if (!fs.existsSync(path.join(process.cwd(), "gatsby-browser.js"))) {
