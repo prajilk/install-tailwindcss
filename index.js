@@ -99,9 +99,9 @@ else if (answer === 'laravel') {
         isFileExists("package.json");
         installTailwind("npm install -D tailwindcss postcss autoprefixer && npx tailwindcss init");
         //Update webpack.mix.js
-        updateLaravelMixConfig();
         updateConfig(answer);
         updateCss("resources/css/app.css");
+        updateLaravelMixConfig();
         success();
     } else {
         console.log("\x1b[31m", "\n\tError: No valid build tool provided or an invalid build tool was specified.");
@@ -138,8 +138,6 @@ else if (answer === 'gatsby') {
     isFileExists("package.json");
     installTailwind("npm install -D tailwindcss postcss autoprefixer && npx tailwindcss init -p");
 
-    updateGatsbyConfig();
-
     updateConfig(answer);
     updateCss("src/styles/global.css");
 
@@ -151,6 +149,7 @@ else if (answer === 'gatsby') {
         const updatedGbContent = importCss + gbContent;
         fs.writeFileSync(path.join(process.cwd(), "gatsby-browser.js"), updatedGbContent);
     }
+    updateGatsbyConfig();
     success();
 }
 else if (answer === 'solid-js') {
@@ -180,8 +179,6 @@ else if (answer === 'remix') {
         process.exit(0);
     }
     isFileExists("package.json");
-
-    updateRemixConfig();
 
     installTailwind("npm install -D tailwindcss && npx tailwindcss init");
     updateConfig(answer);
@@ -221,6 +218,7 @@ export const links = () => [
 
         fs.writeFileSync(path.join(process.cwd(), "app/root.jsx"), updatedRmxContent);
     }
+    updateRemixConfig();
     success();
 }
 else if (answer === 'parcel') {
@@ -251,10 +249,9 @@ else if (answer === "symfony") {
 
     installTailwind("npm install -D tailwindcss postcss postcss-loader autoprefixer && npx tailwindcss init -p");
 
-    updateSymfonyConfig();
-
     updateConfig(answer);
     updateCss("assets/styles/app.css");
+    updateSymfonyConfig();
     success();
 }
 else if (answer === 'meteor') {
