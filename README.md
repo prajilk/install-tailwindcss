@@ -15,6 +15,7 @@ Then follow the prompts!
 You can also directly specify the framework name you want to use via additional command line options. For example, run:
 
 Replace `<framework>` with your desired frontend framework.
+
 Replace `<tool>` with your desired tool if any.
 
 ```bash
