@@ -5,7 +5,7 @@ import minimist from "minimist"
 import fs from 'fs';
 import { execSync } from "child_process";
 import path from "path";
-import FRAMEWORKS from "./frameworks.js";
+import FRAMEWORKS, { TOOLS } from "./frameworks.js";
 import {
     installTailwind,
     isFileExists,
@@ -14,6 +14,7 @@ import {
     success
 } from "./utils.js"
 import {
+    updateLaravelMixConfig,
     updateGatsbyConfig,
     updateRemixConfig,
     updateSymfonyConfig
@@ -23,8 +24,8 @@ const argv = minimist(process.argv.slice(2), { string: ["_"] });
 
 let argFramework = argv._[0]
 let answer = null;
+let tool = argv.tool || argv.t
 
-// FRAMEWORKS.forEach((framework) => argFramework !== framework.value && (argFramework = null));
 FRAMEWORKS.some((framework) => {
     if (argFramework === framework.value) {
         answer = argFramework
@@ -40,6 +41,27 @@ if (answer === null) {
         message: 'Select a package manager',
         choices: FRAMEWORKS,
     });
+
+    if (tool === undefined) {
+        switch (answer) {
+            case "laravel":
+                tool = await select({
+                    message: 'Select a build tool',
+                    choices: TOOLS.laravel,
+                });
+                break;
+            case "vite":
+                tool = await select({
+                    message: 'Select a build tool',
+                    choices: TOOLS.vite,
+                });
+                break;
+
+            default:
+                tool = null;
+                break;
+        }
+    }
 
     console.log(`\nInstalling TailwindCSS for ${answer}.\n`);
 }
@@ -63,11 +85,28 @@ if (answer === 'next-js') {
 
 }
 else if (answer === 'laravel') {
-    isFileExists("package.json");
-    installTailwind("npm install -D tailwindcss postcss autoprefixer && npx tailwindcss init -p");
-    updateConfig(answer);
-    updateCss("public/css/app.css");
-    success();
+    if (tool === "vite") {
+        isFileExists("package.json");
+        installTailwind("npm install -D tailwindcss postcss autoprefixer && npx tailwindcss init -p");
+        updateConfig(answer);
+        updateCss("resources/css/app.css");
+        success();
+    } else if (tool === "laravel-mix") {
+        if (!fs.existsSync(path.join(process.cwd(), 'webpack.mix.js'))) {
+            console.log("\x1b[31m", "\nUnable to find 'webpack.mix.js'. Please install the frontend framework you intend to start working with initially!");
+            process.exit(0);
+        }
+        isFileExists("package.json");
+        installTailwind("npm install -D tailwindcss postcss autoprefixer && npx tailwindcss init");
+        //Update webpack.mix.js
+        updateLaravelMixConfig();
+        updateConfig(answer);
+        updateCss("resources/css/app.css");
+        success();
+    } else {
+        console.log("\x1b[31m", "\n\tError: No valid build tool provided or an invalid build tool was specified.");
+        process.exit(0);
+    }
 }
 else if (answer === 'vite') {
     if (!fs.existsSync(path.join(process.cwd(), 'vite.config.js'))) {
@@ -76,8 +115,19 @@ else if (answer === 'vite') {
     }
     isFileExists("package.json");
     installTailwind("npm install -D tailwindcss postcss autoprefixer && npx tailwindcss init -p");
-    updateConfig(answer);
-    updateCss("src/index.css");
+    if (tool === 'react') {
+        updateConfig(answer + "-react");
+        updateCss("src/index.css");
+    } else if (tool === 'vue') {
+        updateConfig(answer + "-vue");
+        updateCss("src/style.css");
+    } else if (tool === 'svelte') {
+        updateConfig(answer + "-svelte");
+        updateCss("src/app.css");
+    } else {
+        console.log("\x1b[31m", "\n\tError: No valid build tool provided or an invalid build tool was specified.");
+        process.exit(0);
+    }
     success();
 }
 else if (answer === 'gatsby') {
@@ -171,6 +221,21 @@ export const links = () => [
 
         fs.writeFileSync(path.join(process.cwd(), "app/root.jsx"), updatedRmxContent);
     }
+    success();
+}
+else if (answer === 'parcel') {
+    isFileExists("package.json");
+    installTailwind("npm install -D tailwindcss postcss && npx tailwindcss init");
+    const postcssrcContent = '{\n\t"plugins": {\n\t\t"tailwindcss": {}\n\t}\n}'
+    fs.writeFileSync(path.join(process.cwd(), ".postcssrc"), postcssrcContent);
+    updateConfig(answer);
+    if (!fs.existsSync("src")) {
+        fs.mkdirSync("src");
+        fs.writeFileSync("src/index.css", "");
+    } else {
+        fs.writeFileSync("src/index.css", "");
+    }
+    updateCss("src/index.css");
     success();
 }
 else if (answer === "symfony") {

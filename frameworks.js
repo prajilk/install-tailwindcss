@@ -1,3 +1,33 @@
+const TOOLS = {
+    laravel: [
+        {
+            name: "Using Vite",
+            value: "vite",
+        },
+        {
+            name: "Using Laravel Mix",
+            value: "laravel-mix",
+        }
+    ],
+    vite: [
+        {
+            name: "Using React",
+            value: "react"
+        },
+        {
+            name: "Using Vue",
+            value: "vue"
+        },
+        {
+            name: "Using Svelte",
+            value: "svelte"
+        }],
+}
+
+export {
+    TOOLS
+};
+
 export default [
     {
         name: "Next.js",
@@ -38,6 +68,11 @@ export default [
         name: "Remix",
         value: "remix",
         description: "Full stack framework focused on web fundamentals and modern UX."
+    },
+    {
+        name: "Parcel",
+        value: "parcel",
+        description: "The zero-configuration build tool for the web."
     },
     {
         name: "Symfony",

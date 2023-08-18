@@ -1,5 +1,5 @@
 export default {
-    "next-js": `/** @type {import('tailwindcss').Config} */
+  "next-js": `/** @type {import('tailwindcss').Config} */
 module.exports = {
   content: [
     "./app/**/*.{js,ts,jsx,tsx,mdx}",
@@ -11,7 +11,7 @@ module.exports = {
   },
   plugins: [],
 }`,
-    "next-js-src": `/** @type {import('tailwindcss').Config} */
+  "next-js-src": `/** @type {import('tailwindcss').Config} */
 module.exports = {
   content: [
     "./src/**/*.{js,ts,jsx,tsx,mdx}",
@@ -21,7 +21,7 @@ module.exports = {
   },
   plugins: [],
 }`,
-    laravel: `/** @type {import('tailwindcss').Config} */
+  laravel: `/** @type {import('tailwindcss').Config} */
 module.exports = {
   content: [
     "./resources/**/*.blade.php",
@@ -33,7 +33,7 @@ module.exports = {
   },
   plugins: [],
 }`,
-    vite: `/** @type {import('tailwindcss').Config} */
+  "vite-react": `/** @type {import('tailwindcss').Config} */
 export default {
   content: [
     "./index.html",
@@ -44,7 +44,29 @@ export default {
   },
   plugins: [],
 }`,
-    gatsby: `/** @type {import('tailwindcss').Config} */
+  "vite-vue": `/** @type {import('tailwindcss').Config} */
+export default {
+  content: [
+    "./index.html",
+    "./src/**/*.{vue,js,ts,jsx,tsx}",
+  ],
+  theme: {
+    extend: {},
+  },
+  plugins: [],
+}`,
+  "vite-svelte": `/** @type {import('tailwindcss').Config} */
+export default {
+  content: [
+    "./index.html",
+    "./src/**/*.{svelte,js,ts,jsx,tsx}",
+  ],
+  theme: {
+    extend: {},
+  },
+  plugins: [],
+}`,
+  gatsby: `/** @type {import('tailwindcss').Config} */
 module.exports = {
   content: [
     "./src/pages/**/*.{js,jsx,ts,tsx}",
@@ -55,7 +77,7 @@ module.exports = {
   },
   plugins: [],
 }`,
-    "solid-js": `/** @type {import('tailwindcss').Config} */
+  "solid-js": `/** @type {import('tailwindcss').Config} */
 module.exports = {
   content: [
     "./src/**/*.{js,jsx,ts,tsx}",
@@ -65,7 +87,7 @@ module.exports = {
   },
   plugins: [],
 }`,
-    angular: `/** @type {import('tailwindcss').Config} */
+  angular: `/** @type {import('tailwindcss').Config} */
 module.exports = {
   content: [
     "./src/**/*.{html,ts}",
@@ -75,7 +97,7 @@ module.exports = {
   },
   plugins: [],
 }`,
-    "ruby-on-rails": `/** @type {import('tailwindcss').Config} */
+  "ruby-on-rails": `/** @type {import('tailwindcss').Config} */
 module.exports = {
   content: [
     './app/helpers/**/*.rb',
@@ -87,7 +109,7 @@ module.exports = {
   },
   plugins: [],
 }`,
-    remix: `import type { Config } from 'tailwindcss'
+  remix: `import type { Config } from 'tailwindcss'
 
 export default {
   content: ['./app/**/*.{js,jsx,ts,tsx}'],
@@ -96,7 +118,17 @@ export default {
   },
   plugins: [],
 } satisfies Config`,
-    symfony: `/** @type {import('tailwindcss').Config} */
+  parcel: `/** @type {import('tailwindcss').Config} */
+module.exports = {
+  content: [
+    "./src/**/*.{html,js,ts,jsx,tsx}",
+  ],
+  theme: {
+    extend: {},
+  },
+  plugins: [],
+}`,
+  symfony: `/** @type {import('tailwindcss').Config} */
 module.exports = {
   content: [
     "./assets/**/*.js",
@@ -107,7 +139,7 @@ module.exports = {
   },
   plugins: [],
 }`,
-    meteor: `/** @type {import('tailwindcss').Config} */
+  meteor: `/** @type {import('tailwindcss').Config} */
 module.exports = {
   content: [
     "./imports/ui/**/*.{js,jsx,ts,tsx}",

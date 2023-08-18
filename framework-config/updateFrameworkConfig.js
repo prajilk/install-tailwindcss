@@ -1,4 +1,20 @@
 import fs from "fs";
+import path from "path";
+
+const updateLaravelMixConfig = () => {
+    let laravelPlugin = fs.readFileSync(path.join(process.cwd(), "webpack.mix.js"), 'utf-8');
+    const index = laravelPlugin.indexOf('.postCss("resources/css/app.css", "public/css", [');
+    if (index !== -1) {
+        const insertIndex = index + '.postCss("resources/css/app.css", "public/css", ['.length;
+        laravelPlugin = laravelPlugin.slice(0, insertIndex) + `\n\t\trequire("tailwindcss"), ` + laravelPlugin.slice(insertIndex);
+    } else {
+        console.log("\x1b[31m", "\aFailed to add tailwindcss as a PostCSS plugin in your webpack.mix.js file! Do it manually\n");
+        console.log("\x1b[37m", 'Add "require("tailwindcss")" inside the .postCSS function as a plugin in your "webpack.mix.js" file. If you need assistance, check out this resource,');
+        console.log("\x1b[34m", "\n\thttps://tailwindcss.com/docs/guides/laravel#mix");
+        process.exit(0);
+    }
+    fs.writeFileSync(path.join(process.cwd(), "webpack.mix.js"), laravelPlugin);
+}
 
 const updateGatsbyConfig = () => {
     let gatsbyPlugin = fs.readFileSync(path.join(process.cwd(), "gatsby-config.js"), 'utf-8');
@@ -64,6 +80,7 @@ const updateSymfonyConfig = () => {
 }
 
 export {
+    updateLaravelMixConfig,
     updateGatsbyConfig,
     updateRemixConfig,
     updateSymfonyConfig
