@@ -140,7 +140,7 @@ else if (answer === 'gatsby') {
         process.exit(0);
     }
     isFileExists("package.json");
-    installTailwind("npm install -D tailwindcss postcss autoprefixer && npx tailwindcss init -p");
+    installTailwind("npm install -D tailwindcss postcss autoprefixer gatsby-plugin-postcss && npx tailwindcss init -p");
 
     updateConfig(answer);
 
@@ -162,6 +162,10 @@ else if (answer === 'gatsby') {
     success();
 }
 else if (answer === 'solid-js') {
+    if (!fs.existsSync(path.join(process.cwd(), 'vite.config.js'))) {
+        console.log("\x1b[31m", "\nUnable to find 'vite.config.js'. Please install the frontend framework you intend to start working with initially!");
+        process.exit(0);
+    }
     isFileExists("package.json");
     installTailwind("npm install -D tailwindcss postcss autoprefixer && npx tailwindcss init -p");
     updateConfig(answer);
@@ -172,14 +176,14 @@ else if (answer === 'angular') {
     isFileExists("package.json");
     installTailwind("npm install -D tailwindcss postcss autoprefixer && npx tailwindcss init -p");
     updateConfig(answer);
-    updateCss("src/index.css");
+    updateCss("src/styles.css");
     success();
 }
 else if (answer === 'ruby-on-rails') {
     isFileExists("Gemfile");
     installTailwind("./bin/bundle add tailwindcss-rails && ./bin/rails tailwindcss:install");
-    updateConfig(answer);
-    updateCss("app/assets/stylesheets/application.tailwind.css");
+    // Automatically update tailwind.config.js
+    // Automatically update css file
     success();
 }
 else if (answer === 'remix') {
@@ -187,17 +191,33 @@ else if (answer === 'remix') {
         console.log("\x1b[31m", "\nUnable to find 'remix.config.js'. Please install the frontend framework you intend to start working with initially!");
         process.exit(0);
     }
+
+    if (fs.existsSync(path.join(process.cwd(), 'tailwind.config.js')) || fs.existsSync(path.join(process.cwd(), 'tailwind.config.ts'))) {
+        console.log("\x1b[33m", "\n\tYour project already has Tailwind CSS installed.\n");
+        process.exit(0);
+    }
+
     isFileExists("package.json");
 
     installTailwind("npm install -D tailwindcss && npx tailwindcss init");
     updateConfig(answer);
+    if (!fs.existsSync("app/tailwind.css")) {
+        fs.writeFileSync(path.join(process.cwd(), "app", "tailwind.css"), "")
+    }
     updateCss("app/tailwind.css");
 
+    const importContent = 'import stylesheet from "~/tailwind.css";\n\nexport const links = () => [\n\t{ rel: "stylesheet", href: stylesheet }\n];'
     if (!fs.existsSync(path.join(process.cwd(), "app/root.jsx"))) {
-        const importContent = 'import stylesheet from "~/tailwind.css";\n\nexport const links = () => [\n\t{ rel: "stylesheet", href: stylesheet }\n];'
+        fs.writeFileSync(path.join(process.cwd(), "app/root.tsx"), importContent)
+    } if (!fs.existsSync(path.join(process.cwd(), "app/root.tsx"))) {
         fs.writeFileSync(path.join(process.cwd(), "app/root.jsx"), importContent)
     } else {
-        const rmxContent = fs.readFileSync(path.join(process.cwd(), "app/root.jsx"), 'utf-8');
+        let rmxContent;
+        if (fs.existsSync(path.join(process.cwd(), "app/root.jsx"))) {
+            rmxContent = fs.readFileSync(path.join(process.cwd(), "app/root.jsx"), 'utf-8');
+        } else {
+            rmxContent = fs.readFileSync(path.join(process.cwd(), "app/root.tsx"), 'utf-8');
+        }
 
         const importToAdd = `import stylesheet from "~/tailwind.css";
 
@@ -246,8 +266,8 @@ else if (answer === 'parcel') {
     success();
 }
 else if (answer === "symfony") {
-    if (!fs.existsSync(path.join(process.cwd(), 'webpack.config.js'))) {
-        console.log("\x1b[31m", "\nUnable to find 'webpack.config.js'. Please install the frontend framework you intend to start working with initially!");
+    if (!fs.existsSync(path.join(process.cwd(), 'composer.json'))) {
+        console.log("\x1b[31m", "\nUnable to find 'composer.json'. Please install the frontend framework you intend to start working with initially!");
         process.exit(0);
     }
     try {

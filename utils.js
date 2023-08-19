@@ -55,7 +55,8 @@ const updateCss = (pathToFile) => {
 }
 
 const success = () => {
-    console.log("\x1b[32m", "\nSuccessfully installed and configured TailwindCSS.\n\nYou can now begin utilizing Tailwind's utility classes to style your content.");
+    console.log("\x1b[32m", "\n\tSuccessfully installed and configured TailwindCSS.\n\n");
+    console.log("You can now begin utilizing Tailwind's utility classes to style your content.\n");
 }
 
 export {

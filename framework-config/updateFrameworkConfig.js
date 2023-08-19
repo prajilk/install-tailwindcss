@@ -32,7 +32,7 @@ const updateGatsbyConfig = () => {
         const index = gatsbyPlugin.indexOf('plugins:[');
         if (index !== -1) {
             const insertIndex = index + 'plugins:['.length;
-            gatsbyPlugin = gatsbyPlugin.slice(0, insertIndex) + `\n\t'gatsby-plugin-postcss', ` + gatsbyPlugin.slice(insertIndex);
+            gatsbyPlugin = gatsbyPlugin.slice(0, insertIndex) + `\n\t\t'gatsby-plugin-postcss',\n\t` + gatsbyPlugin.slice(insertIndex);
         } else {
             console.log("\x1b[31m", "\nFailed to enable the 'gatsby-plugin-postcss' in your gatsby-config.js file! Do it manually\n");
             console.log("\x1b[37m", 'Add "gatsby-plugin-postcss" inside the plugins array of the module.exports object in your "gatsby-config.js" file. If you need assistance, check out this resource,');
