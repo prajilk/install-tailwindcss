@@ -41,28 +41,26 @@ if (answer === null) {
         message: 'Select a framework',
         choices: FRAMEWORKS,
     });
+}
+if (tool === undefined) {
+    switch (answer) {
+        case "laravel":
+            tool = await select({
+                message: 'Select a build tool',
+                choices: TOOLS.laravel,
+            });
+            break;
+        case "vite":
+            tool = await select({
+                message: 'Select a build tool',
+                choices: TOOLS.vite,
+            });
+            break;
 
-    if (tool === undefined) {
-        switch (answer) {
-            case "laravel":
-                tool = await select({
-                    message: 'Select a build tool',
-                    choices: TOOLS.laravel,
-                });
-                break;
-            case "vite":
-                tool = await select({
-                    message: 'Select a build tool',
-                    choices: TOOLS.vite,
-                });
-                break;
-
-            default:
-                tool = null;
-                break;
-        }
+        default:
+            tool = null;
+            break;
     }
-
 }
 console.log(`\nInstalling TailwindCSS for ${answer}.\n`);
 
