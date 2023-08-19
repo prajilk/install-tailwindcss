@@ -54,9 +54,10 @@ const updateCss = (pathToFile) => {
     });
 }
 
-const success = () => {
-    console.log("\x1b[32m", "\n\tSuccessfully installed and configured TailwindCSS.\n\n");
-    console.log("You can now begin utilizing Tailwind's utility classes to style your content.\n");
+const success = (framework) => {
+    console.log("\x1b[32m\n\tSuccessfully installed and configured TailwindCSS.\n\x1b[0m");
+    console.log("You can now begin utilizing Tailwind's utility classes to style your content.");
+    console.log(`Need help? visit: \x1b[34mhttps://tailwindcss.com/docs/guides/${framework}\x1b[0m`);
 }
 
 export {

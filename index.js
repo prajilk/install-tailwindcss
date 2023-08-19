@@ -63,8 +63,8 @@ if (answer === null) {
         }
     }
 
-    console.log(`\nInstalling TailwindCSS for ${answer}.\n`);
 }
+console.log(`\nInstalling TailwindCSS for ${answer}.\n`);
 
 
 if (answer === 'next-js') {
@@ -81,7 +81,7 @@ if (answer === 'next-js') {
         updateConfig(answer);
         updateCss("app/globals.css");
     }
-    success();
+    success("nextjs");
 
 }
 else if (answer === 'laravel') {
@@ -94,7 +94,7 @@ else if (answer === 'laravel') {
         installTailwind("npm install -D tailwindcss postcss autoprefixer && npx tailwindcss init -p");
         updateConfig(answer);
         updateCss("resources/css/app.css");
-        success();
+        success("laravel");
     } else if (tool === "laravel-mix") {
         if (!fs.existsSync(path.join(process.cwd(), 'webpack.mix.js'))) {
             console.log("\x1b[31m", "\nUnable to find 'webpack.mix.js'. Please install the frontend framework you intend to start working with initially!");
@@ -106,7 +106,7 @@ else if (answer === 'laravel') {
         updateConfig(answer);
         updateCss("resources/css/app.css");
         updateLaravelMixConfig();
-        success();
+        success("laravel");
     } else {
         console.log("\x1b[31m", "\n\tError: No valid build tool provided or an invalid build tool was specified.");
         process.exit(0);
@@ -132,7 +132,7 @@ else if (answer === 'vite') {
         console.log("\x1b[31m", "\n\tError: No valid build tool provided or an invalid build tool was specified.");
         process.exit(0);
     }
-    success();
+    success(answer);
 }
 else if (answer === 'gatsby') {
     if (!fs.existsSync(path.join(process.cwd(), 'gatsby-config.js'))) {
@@ -159,7 +159,7 @@ else if (answer === 'gatsby') {
         fs.writeFileSync(path.join(process.cwd(), "gatsby-browser.js"), updatedGbContent);
     }
     updateGatsbyConfig();
-    success();
+    success(answer);
 }
 else if (answer === 'solid-js') {
     if (!fs.existsSync(path.join(process.cwd(), 'vite.config.js'))) {
@@ -170,21 +170,21 @@ else if (answer === 'solid-js') {
     installTailwind("npm install -D tailwindcss postcss autoprefixer && npx tailwindcss init -p");
     updateConfig(answer);
     updateCss("src/index.css");
-    success();
+    success("solidjs");
 }
 else if (answer === 'angular') {
     isFileExists("package.json");
     installTailwind("npm install -D tailwindcss postcss autoprefixer && npx tailwindcss init -p");
     updateConfig(answer);
     updateCss("src/styles.css");
-    success();
+    success(answer);
 }
 else if (answer === 'ruby-on-rails') {
     isFileExists("Gemfile");
     installTailwind("./bin/bundle add tailwindcss-rails && ./bin/rails tailwindcss:install");
     // Automatically update tailwind.config.js
     // Automatically update css file
-    success();
+    success(answer);
 }
 else if (answer === 'remix') {
     if (!fs.existsSync(path.join(process.cwd(), 'remix.config.js'))) {
@@ -248,7 +248,7 @@ export const links = () => [
         fs.writeFileSync(path.join(process.cwd(), "app/root.jsx"), updatedRmxContent);
     }
     updateRemixConfig();
-    success();
+    success(answer);
 }
 else if (answer === 'parcel') {
     isFileExists("package.json");
@@ -271,7 +271,7 @@ else if (answer === "symfony") {
         process.exit(0);
     }
     try {
-        execSync("composer require symfony/webpack-encore-bundle")
+        execSync("composer require doctrine/annotations && composer require symfony/webpack-encore-bundle")
     } catch (error) {
         console.log(error.message);
     }
@@ -281,21 +281,21 @@ else if (answer === "symfony") {
     updateConfig(answer);
     updateCss("assets/styles/app.css");
     updateSymfonyConfig();
-    success();
+    success(answer);
 }
 else if (answer === 'meteor') {
     isFileExists("package.json");
     installTailwind("npm install -D tailwindcss postcss autoprefixer && npx tailwindcss init -p");
     updateConfig(answer);
     updateCss("client/main.css");
-    success();
+    success(answer);
 }
 else if (answer === 'create-react-app') {
     isFileExists("package.json");
     installTailwind("npm install -D tailwindcss && npx tailwindcss init");
     updateConfig("solid-js");
     updateCss("src/index.css");
-    success();
+    success(answer);
 }
 else if (answer === 'astro') {
     if (!fs.existsSync(path.join(process.cwd(), 'astro.config.mjs'))) {
@@ -304,12 +304,16 @@ else if (answer === 'astro') {
     }
     isFileExists("package.json");
     installTailwind("npx astro add tailwind");
-    success();
+    success(answer);
 }
 else if (answer === 'qwik') {
+    if (!fs.existsSync(path.join(process.cwd(), 'vite.config.js'))) {
+        console.log("\x1b[31m", "\nUnable to find 'vite.config.js'. Please install the frontend framework you intend to start working with initially!");
+        process.exit(0);
+    }
     isFileExists("package.json");
     installTailwind("npm install -D tailwindcss postcss autoprefixer && npx tailwindcss init -p");
     updateConfig("next-js-src");
     updateCss("src/global.css");
-    success();
+    success(answer);
 }
