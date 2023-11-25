@@ -66,109 +66,117 @@ console.log(`\nInstalling TailwindCSS for ${answer}.\n`);
 
 
 if (answer === 'next-js') {
-    if (!fs.existsSync(path.join(process.cwd(), 'next.config.js'))) {
-        console.log("\x1b[31m", "\nUnable to find 'next.config.js'. Please install the frontend framework you intend to start working with initially!");
+    if (fs.existsSync(path.join(process.cwd(), 'next.config.js')) || fs.existsSync(path.join(process.cwd(), 'next.config.ts'))) {
+        isFileExists("package.json");
+        installTailwind("npm install -D tailwindcss postcss autoprefixer && npx tailwindcss init -p");
+        if (fs.existsSync(path.join(process.cwd(), 'src'))) {
+            updateConfig(answer + '-src');
+            updateCss("src/app/globals.css");
+        } else {
+            updateConfig(answer);
+            updateCss("app/globals.css");
+        }
+        success("nextjs");
         process.exit(0);
     }
-    isFileExists("package.json");
-    installTailwind("npm install -D tailwindcss postcss autoprefixer && npx tailwindcss init -p");
-    if (fs.existsSync(path.join(process.cwd(), 'src'))) {
-        updateConfig(answer + '-src');
-        updateCss("src/app/globals.css");
-    } else {
-        updateConfig(answer);
-        updateCss("app/globals.css");
-    }
-    success("nextjs");
+    console.log("\x1b[31m", "\nUnable to find 'next.config.js'. Please install the frontend framework you intend to start working with initially!");
+    process.exit(0);
 
 }
 else if (answer === 'laravel') {
     if (tool === "vite") {
-        if (!fs.existsSync(path.join(process.cwd(), 'vite.config.js'))) {
-            console.log("\x1b[31m", "\nUnable to find 'vite.config.js'. Please install the frontend framework you intend to start working with initially!");
+        if (fs.existsSync(path.join(process.cwd(), 'vite.config.js')) || fs.existsSync(path.join(process.cwd(), 'vite.config.ts'))) {
+            isFileExists("package.json");
+            installTailwind("npm install -D tailwindcss postcss autoprefixer && npx tailwindcss init -p");
+            updateConfig(answer);
+            updateCss("resources/css/app.css");
+            success("laravel");
             process.exit(0);
         }
-        isFileExists("package.json");
-        installTailwind("npm install -D tailwindcss postcss autoprefixer && npx tailwindcss init -p");
-        updateConfig(answer);
-        updateCss("resources/css/app.css");
-        success("laravel");
+        console.log("\x1b[31m", "\nUnable to find 'vite.config.js'. Please install the frontend framework you intend to start working with initially!");
+        process.exit(0);
     } else if (tool === "laravel-mix") {
-        if (!fs.existsSync(path.join(process.cwd(), 'webpack.mix.js'))) {
-            console.log("\x1b[31m", "\nUnable to find 'webpack.mix.js'. Please install the frontend framework you intend to start working with initially!");
+        if (fs.existsSync(path.join(process.cwd(), 'webpack.mix.js')) || fs.existsSync(path.join(process.cwd(), 'webpack.mix.ts'))) {
+            isFileExists("package.json");
+            installTailwind("npm install -D tailwindcss postcss autoprefixer && npx tailwindcss init");
+            //Update webpack.mix.js
+            updateConfig(answer);
+            updateCss("resources/css/app.css");
+            updateLaravelMixConfig();
+            success("laravel");
             process.exit(0);
         }
-        isFileExists("package.json");
-        installTailwind("npm install -D tailwindcss postcss autoprefixer && npx tailwindcss init");
-        //Update webpack.mix.js
-        updateConfig(answer);
-        updateCss("resources/css/app.css");
-        updateLaravelMixConfig();
-        success("laravel");
+        console.log("\x1b[31m", "\nUnable to find 'webpack.mix.js'. Please install the frontend framework you intend to start working with initially!");
+        process.exit(0);
     } else {
         console.log("\x1b[31m", "\n\tError: No valid build tool provided or an invalid build tool was specified.");
         process.exit(0);
     }
 }
 else if (answer === 'vite') {
-    if (!fs.existsSync(path.join(process.cwd(), 'vite.config.js'))) {
-        console.log("\x1b[31m", "\nUnable to find 'vite.config.js'. Please install the frontend framework you intend to start working with initially!");
+    if (fs.existsSync(path.join(process.cwd(), 'vite.config.js')) || fs.existsSync(path.join(process.cwd(), 'vite.config.ts'))) {
+        isFileExists("package.json");
+        installTailwind("npm install -D tailwindcss postcss autoprefixer && npx tailwindcss init -p");
+        if (tool === 'react') {
+            updateConfig(answer + "-react");
+            updateCss("src/index.css");
+        } else if (tool === 'vue') {
+            updateConfig(answer + "-vue");
+            updateCss("src/style.css");
+        } else if (tool === 'svelte') {
+            updateConfig(answer + "-svelte");
+            updateCss("src/app.css");
+        } else {
+            console.log("\x1b[31m", "\n\tError: No valid build tool provided or an invalid build tool was specified.");
+            process.exit(0);
+        }
+        success(answer);
         process.exit(0);
     }
-    isFileExists("package.json");
-    installTailwind("npm install -D tailwindcss postcss autoprefixer && npx tailwindcss init -p");
-    if (tool === 'react') {
-        updateConfig(answer + "-react");
-        updateCss("src/index.css");
-    } else if (tool === 'vue') {
-        updateConfig(answer + "-vue");
-        updateCss("src/style.css");
-    } else if (tool === 'svelte') {
-        updateConfig(answer + "-svelte");
-        updateCss("src/app.css");
-    } else {
-        console.log("\x1b[31m", "\n\tError: No valid build tool provided or an invalid build tool was specified.");
-        process.exit(0);
-    }
-    success(answer);
+    console.log("\x1b[31m", "\nUnable to find 'vite.config.js'. Please install the frontend framework you intend to start working with initially!");
+    process.exit(0);
 }
 else if (answer === 'gatsby') {
-    if (!fs.existsSync(path.join(process.cwd(), 'gatsby-config.js'))) {
-        console.log("\x1b[31m", "\nUnable to find 'gatsby-config.js'. Please install the frontend framework you intend to start working with initially!");
+    if (fs.existsSync(path.join(process.cwd(), 'gatsby-config.js')) || fs.existsSync(path.join(process.cwd(), 'gatsby-config.ts'))) {
+        isFileExists("package.json");
+        installTailwind("npm install -D tailwindcss postcss autoprefixer gatsby-plugin-postcss && npx tailwindcss init -p");
+
+        updateConfig(answer);
+
+        if (!fs.existsSync("src/styles")) {
+            fs.mkdirSync("src/styles")
+            fs.writeFileSync(path.join(process.cwd(), "src", "styles", "global.css"), "")
+        }
+        updateCss("src/styles/global.css");
+
+        if (fs.existsSync(path.join(process.cwd(), "gatsby-browser.js"))) {
+            fs.writeFileSync(path.join(process.cwd(), "gatsby-browser.js"), "import './src/styles/global.css'")
+        } else if (fs.existsSync(path.join(process.cwd(), "gatsby-browser.js"))) {
+            fs.writeFileSync(path.join(process.cwd(), "gatsby-browser.ts"), "import './src/styles/global.css'")
+        } else {
+            const importCss = "import './src/styles/global.css'\n\n"
+            const gbContent = fs.readFileSync(path.join(process.cwd(), "gatsby-browser.js"), 'utf-8');
+            const updatedGbContent = importCss + gbContent;
+            fs.writeFileSync(path.join(process.cwd(), "gatsby-browser.js"), updatedGbContent);
+        }
+        updateGatsbyConfig();
+        success(answer);
         process.exit(0);
     }
-    isFileExists("package.json");
-    installTailwind("npm install -D tailwindcss postcss autoprefixer gatsby-plugin-postcss && npx tailwindcss init -p");
-
-    updateConfig(answer);
-
-    if (!fs.existsSync("src/styles")) {
-        fs.mkdirSync("src/styles")
-        fs.writeFileSync(path.join(process.cwd(), "src", "styles", "global.css"), "")
-    }
-    updateCss("src/styles/global.css");
-
-    if (!fs.existsSync(path.join(process.cwd(), "gatsby-browser.js"))) {
-        fs.writeFileSync(path.join(process.cwd(), "gatsby-browser.js"), "import './src/styles/global.css'")
-    } else {
-        const importCss = "import './src/styles/global.css'\n\n"
-        const gbContent = fs.readFileSync(path.join(process.cwd(), "gatsby-browser.js"), 'utf-8');
-        const updatedGbContent = importCss + gbContent;
-        fs.writeFileSync(path.join(process.cwd(), "gatsby-browser.js"), updatedGbContent);
-    }
-    updateGatsbyConfig();
-    success(answer);
+    console.log("\x1b[31m", "\nUnable to find 'gatsby-config.js'. Please install the frontend framework you intend to start working with initially!");
+    process.exit(0);
 }
 else if (answer === 'solid-js') {
-    if (!fs.existsSync(path.join(process.cwd(), 'vite.config.js'))) {
-        console.log("\x1b[31m", "\nUnable to find 'vite.config.js'. Please install the frontend framework you intend to start working with initially!");
+    if (fs.existsSync(path.join(process.cwd(), 'vite.config.js')) || fs.existsSync(path.join(process.cwd(), 'vite.config.ts'))) {
+        isFileExists("package.json");
+        installTailwind("npm install -D tailwindcss postcss autoprefixer && npx tailwindcss init -p");
+        updateConfig(answer);
+        updateCss("src/index.css");
+        success("solidjs");
         process.exit(0);
     }
-    isFileExists("package.json");
-    installTailwind("npm install -D tailwindcss postcss autoprefixer && npx tailwindcss init -p");
-    updateConfig(answer);
-    updateCss("src/index.css");
-    success("solidjs");
+    console.log("\x1b[31m", "\nUnable to find 'vite.config.js'. Please install the frontend framework you intend to start working with initially!");
+    process.exit(0);
 }
 else if (answer === 'angular') {
     isFileExists("package.json");
@@ -185,68 +193,69 @@ else if (answer === 'ruby-on-rails') {
     success(answer);
 }
 else if (answer === 'remix') {
-    if (!fs.existsSync(path.join(process.cwd(), 'remix.config.js'))) {
-        console.log("\x1b[31m", "\nUnable to find 'remix.config.js'. Please install the frontend framework you intend to start working with initially!");
+    if (fs.existsSync(path.join(process.cwd(), 'remix.config.js')) || fs.existsSync(path.join(process.cwd(), 'remix.config.ts'))) {
+        if (fs.existsSync(path.join(process.cwd(), 'tailwind.config.js')) || fs.existsSync(path.join(process.cwd(), 'tailwind.config.ts'))) {
+            console.log("\x1b[33m", "\n\tYour project already has Tailwind CSS installed.\n");
+            process.exit(0);
+        }
+
+        isFileExists("package.json");
+
+        installTailwind("npm install -D tailwindcss && npx tailwindcss init");
+        updateConfig(answer);
+        if (!fs.existsSync("app/tailwind.css")) {
+            fs.writeFileSync(path.join(process.cwd(), "app", "tailwind.css"), "")
+        }
+        updateCss("app/tailwind.css");
+
+        const importContent = 'import stylesheet from "~/tailwind.css";\n\nexport const links = () => [\n\t{ rel: "stylesheet", href: stylesheet }\n];'
+        if (!fs.existsSync(path.join(process.cwd(), "app/root.jsx"))) {
+            fs.writeFileSync(path.join(process.cwd(), "app/root.tsx"), importContent)
+        } if (!fs.existsSync(path.join(process.cwd(), "app/root.tsx"))) {
+            fs.writeFileSync(path.join(process.cwd(), "app/root.jsx"), importContent)
+        } else {
+            let rmxContent;
+            if (fs.existsSync(path.join(process.cwd(), "app/root.jsx"))) {
+                rmxContent = fs.readFileSync(path.join(process.cwd(), "app/root.jsx"), 'utf-8');
+            } else {
+                rmxContent = fs.readFileSync(path.join(process.cwd(), "app/root.tsx"), 'utf-8');
+            }
+
+            const importToAdd = `import stylesheet from "~/tailwind.css";
+    
+    export const links = () => [
+        { rel: "stylesheet", href: stylesheet }
+    ];`;
+
+            // Split the content by lines
+            const lines = rmxContent.split('\n');
+
+            // Find the index to insert the new import after the existing import statements
+            let insertIndex = lines.findIndex(line => !line.trim().startsWith('import '));
+
+            if (insertIndex === -1) {
+                // If no other import found, insert at the beginning
+                insertIndex = 0;
+            } else {
+                // Move down one line to insert after the last import
+                insertIndex += 1;
+            }
+
+            // Insert the new import at the determined index
+            lines.splice(insertIndex, 0, importToAdd);
+
+            // Rejoin the lines to create the updated content
+            const updatedRmxContent = lines.join('\n');
+
+            fs.writeFileSync(path.join(process.cwd(), "app/root.jsx"), updatedRmxContent);
+        }
+        updateRemixConfig();
+        success(answer);
         process.exit(0);
     }
 
-    if (fs.existsSync(path.join(process.cwd(), 'tailwind.config.js')) || fs.existsSync(path.join(process.cwd(), 'tailwind.config.ts'))) {
-        console.log("\x1b[33m", "\n\tYour project already has Tailwind CSS installed.\n");
-        process.exit(0);
-    }
-
-    isFileExists("package.json");
-
-    installTailwind("npm install -D tailwindcss && npx tailwindcss init");
-    updateConfig(answer);
-    if (!fs.existsSync("app/tailwind.css")) {
-        fs.writeFileSync(path.join(process.cwd(), "app", "tailwind.css"), "")
-    }
-    updateCss("app/tailwind.css");
-
-    const importContent = 'import stylesheet from "~/tailwind.css";\n\nexport const links = () => [\n\t{ rel: "stylesheet", href: stylesheet }\n];'
-    if (!fs.existsSync(path.join(process.cwd(), "app/root.jsx"))) {
-        fs.writeFileSync(path.join(process.cwd(), "app/root.tsx"), importContent)
-    } if (!fs.existsSync(path.join(process.cwd(), "app/root.tsx"))) {
-        fs.writeFileSync(path.join(process.cwd(), "app/root.jsx"), importContent)
-    } else {
-        let rmxContent;
-        if (fs.existsSync(path.join(process.cwd(), "app/root.jsx"))) {
-            rmxContent = fs.readFileSync(path.join(process.cwd(), "app/root.jsx"), 'utf-8');
-        } else {
-            rmxContent = fs.readFileSync(path.join(process.cwd(), "app/root.tsx"), 'utf-8');
-        }
-
-        const importToAdd = `import stylesheet from "~/tailwind.css";
-
-export const links = () => [
-    { rel: "stylesheet", href: stylesheet }
-];`;
-
-        // Split the content by lines
-        const lines = rmxContent.split('\n');
-
-        // Find the index to insert the new import after the existing import statements
-        let insertIndex = lines.findIndex(line => !line.trim().startsWith('import '));
-
-        if (insertIndex === -1) {
-            // If no other import found, insert at the beginning
-            insertIndex = 0;
-        } else {
-            // Move down one line to insert after the last import
-            insertIndex += 1;
-        }
-
-        // Insert the new import at the determined index
-        lines.splice(insertIndex, 0, importToAdd);
-
-        // Rejoin the lines to create the updated content
-        const updatedRmxContent = lines.join('\n');
-
-        fs.writeFileSync(path.join(process.cwd(), "app/root.jsx"), updatedRmxContent);
-    }
-    updateRemixConfig();
-    success(answer);
+    console.log("\x1b[31m", "\nUnable to find 'remix.config.js'. Please install the frontend framework you intend to start working with initially!");
+    process.exit(0);
 }
 else if (answer === 'parcel') {
     isFileExists("package.json");
@@ -296,22 +305,24 @@ else if (answer === 'create-react-app') {
     success(answer);
 }
 else if (answer === 'astro') {
-    if (!fs.existsSync(path.join(process.cwd(), 'astro.config.mjs'))) {
-        console.log("\x1b[31m", "\nUnable to find 'astro.config.mjs'. Please install the frontend framework you intend to start working with initially!");
+    if (fs.existsSync(path.join(process.cwd(), 'astro.config.mjs')) || fs.existsSync(path.join(process.cwd(), 'astro.config.ts'))) {
+        isFileExists("package.json");
+        installTailwind("npx astro add tailwind");
+        success(answer);
         process.exit(0);
     }
-    isFileExists("package.json");
-    installTailwind("npx astro add tailwind");
-    success(answer);
+    console.log("\x1b[31m", "\nUnable to find 'astro.config.mjs'. Please install the frontend framework you intend to start working with initially!");
+    process.exit(0);
 }
 else if (answer === 'qwik') {
-    if (!fs.existsSync(path.join(process.cwd(), 'vite.config.js'))) {
-        console.log("\x1b[31m", "\nUnable to find 'vite.config.js'. Please install the frontend framework you intend to start working with initially!");
+    if (fs.existsSync(path.join(process.cwd(), 'vite.config.js')) || fs.existsSync(path.join(process.cwd(), 'vite.config.ts'))) {
+        isFileExists("package.json");
+        installTailwind("npm install -D tailwindcss postcss autoprefixer && npx tailwindcss init -p");
+        updateConfig("next-js-src");
+        updateCss("src/global.css");
+        success(answer);
         process.exit(0);
     }
-    isFileExists("package.json");
-    installTailwind("npm install -D tailwindcss postcss autoprefixer && npx tailwindcss init -p");
-    updateConfig("next-js-src");
-    updateCss("src/global.css");
-    success(answer);
+    console.log("\x1b[31m", "\nUnable to find 'vite.config.js'. Please install the frontend framework you intend to start working with initially!");
+    process.exit(0);
 }
