@@ -26,6 +26,7 @@ const updateConfig = (framework) => {
         fs.writeFileSync("tailwind.config.js", newContent, 'utf-8');
     } catch (error) {
         console.error(error.message);
+        process.exit(0);
     }
 }
 
@@ -37,25 +38,18 @@ const updateCss = (pathToFile) => {
 
     isFileExists(pathToFile)
 
-    fs.readFile(pathToFile, 'utf-8', (err, indexContent) => {
-        if (err) {
-            console.error(err.message);
-            process.exit(0);
-        }
-
-        const updatedContent = twConfig + indexContent;
-
-        fs.writeFile(pathToFile, updatedContent, 'utf-8', (err) => {
-            if (err) {
-                console.error(err.message);
-                process.exit(0);
-            }
-        });
-    });
+    try {
+        const fileContent = fs.readFileSync(pathToFile, 'utf8')
+        const updatedContent = twConfig + fileContent;
+        fs.writeFileSync(pathToFile, updatedContent, 'utf-8')
+    } catch (err) {
+        console.error(err.message);
+        process.exit(0);
+    }
 }
 
 const success = (framework) => {
-    console.log("\x1b[32m\n\tSuccessfully installed and configured TailwindCSS.\n\x1b[0m");
+    console.log("\x1b[32mSuccessfully installed and configured TailwindCSS.\n\x1b[0m");
     console.log("You can now begin utilizing Tailwind's utility classes to style your content.");
     console.log(`Need help? visit: \x1b[34mhttps://tailwindcss.com/docs/guides/${framework}\x1b[0m`);
 }

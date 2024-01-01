@@ -116,7 +116,7 @@ else if (answer === 'laravel') {
 else if (answer === 'vite') {
     if (fs.existsSync(path.join(process.cwd(), 'vite.config.js')) || fs.existsSync(path.join(process.cwd(), 'vite.config.ts'))) {
         isFileExists("package.json");
-        installTailwind("npm install -D tailwindcss postcss autoprefixer && npx tailwindcss init -p");
+        // installTailwind("npm install -D tailwindcss postcss autoprefixer && npx tailwindcss init -p");
         if (tool === 'react') {
             updateConfig(answer + "-react");
             updateCss("src/index.css");
